@@ -1,0 +1,81 @@
+<!-- activity_main.xml -->
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <FrameLayout
+        android:id="@+id/fragmentContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+       >
+
+        <ImageView
+            android:id="@+id/navBarBase"
+            android:layout_width="0dp"
+            android:layout_height="400dp"
+            android:layout_marginBottom="-300dp"
+            android:src="@drawable/navbar"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/iconContainer"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <ImageView
+                android:id="@+id/homePage"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:src="@drawable/selector_homepage" />
+
+            <ImageView
+                android:id="@+id/qrPage"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1"
+                android:src="@drawable/selector_qrpage" />
+
+            <ImageView
+                android:id="@+id/scanPage"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1"
+                android:src="@drawable/selector_scanpage" />
+
+            <ImageView
+                android:id="@+id/userPage"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:src="@drawable/selector_userpage" />
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</RelativeLayout>

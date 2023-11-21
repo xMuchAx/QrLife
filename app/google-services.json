@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "352641290946",
+    "project_id": "qrlife-ea00a",
+    "storage_bucket": "qrlife-ea00a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:352641290946:android:71aaf2634722a3582ee15b",
+        "android_client_info": {
+          "package_name": "com.example.qrlife"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAilFW4cHAEHOFdCZK0IAwX7dC08RPNaac"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
