@@ -6,6 +6,8 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
+import android.widget.Toast
+import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import com.example.qrlife.LoginActivity
 import com.example.qrlife.R
@@ -47,6 +49,7 @@ class CreateQrPageFragment : Fragment() {
             // Ajouter un écouteur de clic au bouton "Submit"
             binding.buttonSubmit.setOnClickListener { addQr(userId) }
             binding.buttonSubmitAdd.setOnClickListener { addNewEditText() }
+            binding.imageBack.setOnClickListener{requireActivity().onBackPressed()}
 
         } else {
             // L'utilisateur n'est pas connecté, gérer en conséquence
@@ -62,67 +65,109 @@ class CreateQrPageFragment : Fragment() {
     }
 
     private fun addQr(userId: String) {
+        dataQrCode.clear()
 
         val nameQr = binding.textNameQr.text.toString()
 
+        if(nameQr.isEmpty()){
 
-        for (i in 0 until binding.editTextContainer.childCount) {
-            val editText = binding.editTextContainer.getChildAt(i) as? EditText
-            val editTextValue = editText?.text?.toString() ?: ""
-            dataQrCode.add(editTextValue)
-        }
+            Toast.makeText(
+                requireContext(),
+                "Veuillez donnez un nom au QrCode",
+                Toast.LENGTH_SHORT
+            ).show()
 
-        // Maintenant, editTextValues contient toutes les valeurs des EditText
-        // Vous pouvez faire ce que vous voulez avec cette liste
-        println("Valeurs des EditText : $dataQrCode")
-
-
-        // Vérifier si dataQrCode n'est pas vide
-        if (dataQrCode.isNotEmpty()) {
-            // Créer une instance de la collection "QrCode" dans Firestore
-            val qrCodeRef = db.collection("QrCode")
-
-            // Créer une carte (Map) avec les données à ajouter
-            val qrCodeData = HashMap<String, Any>()
-            qrCodeData["dataQrCode"] = dataQrCode
-            qrCodeData["userId"] = userId
-            qrCodeData["nameQr"] = nameQr
-
-            // Ajouter les données dans Firestore
-            qrCodeRef.add(qrCodeData)
-                .addOnSuccessListener { documentReference ->
-                    println("Document ajouté avec l'ID : ${documentReference.id}")
-                    // Ajout réussi, vous pouvez effectuer des actions supplémentaires si nécessaire
+        }else {
+            var editTextEmpty = false
+            for (i in 0 until binding.editTextContainer.childCount) {
+                val cardView = binding.editTextContainer.getChildAt(i) as? CardView
+                val editText = cardView?.getChildAt(0) as? EditText
+                val editTextValue = editText?.text?.toString() ?: ""
+                if (editTextValue.isEmpty()) {
+                    editTextEmpty = true
+                    break
                 }
-                .addOnFailureListener { e ->
-                    println("Erreur lors de l'ajout du document : $e")
-                    // Gérer les erreurs d'ajout ici
+                dataQrCode.add(editTextValue)
+                println("edit text test : $editTextValue")
+            }
+
+            // Maintenant, editTextValues contient toutes les valeurs des EditText
+            // Vous pouvez faire ce que vous voulez avec cette liste
+            println("Valeurs des EditText : $dataQrCode")
+
+            if (editTextEmpty) {
+                // Afficher votre alerte ici (dialog, toast, etc.)
+                // Exemple avec un toast
+                Toast.makeText(
+                    requireContext(),
+                    "Veuillez remplir tous les champs",
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else {
+                // Vérifier si dataQrCode n'est pas vide
+                if (dataQrCode.isNotEmpty()) {
+                    // Créer une instance de la collection "QrCode" dans Firestore
+                    val qrCodeRef = db.collection("QrCode")
+
+                    // Créer une carte (Map) avec les données à ajouter
+                    val qrCodeData = HashMap<String, Any>()
+                    qrCodeData["dataQrCode"] = dataQrCode
+                    qrCodeData["userId"] = userId
+                    qrCodeData["nameQr"] = nameQr
+
+                    // Ajouter les données dans Firestore
+                    qrCodeRef.add(qrCodeData)
+                        .addOnSuccessListener { documentReference ->
+                            println("Document ajouté avec l'ID : ${documentReference.id}")
+                            // Ajout réussi, vous pouvez effectuer des actions supplémentaires si nécessaire
+                        }
+                        .addOnFailureListener { e ->
+                            println("Erreur lors de l'ajout du document : $e")
+                            // Gérer les erreurs d'ajout ici
+                        }
+                } else {
+                    // dataQrCode est vide, gérer en conséquence
+                    println("dataQrCode est vide")
                 }
-        } else {
-            // dataQrCode est vide, gérer en conséquence
-            println("dataQrCode est vide")
+            }
         }
 
     }
 
     private fun addNewEditText() {
-        // Créer un nouvel EditText
+
+        // Créer un nouvel EditText en utilisant le style EditTextStyle
         val newEditText = EditText(requireContext())
+        newEditText.layoutParams = ViewGroup.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            resources.getDimensionPixelSize(R.dimen.edit_text_height),
 
-        // Définir des paramètres de mise en page (vous pouvez ajuster cela en fonction de vos besoins)
-        val layoutParams = LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.MATCH_PARENT,
-            LinearLayout.LayoutParams.WRAP_CONTENT
         )
+        newEditText.setBackgroundResource(android.R.color.transparent)
 
-        // Affecter des paramètres au nouvel EditText
+        // Définir un ID pour l'EditText
         newEditText.id = View.generateViewId()
-        println("ID de l'EditText : ${newEditText.id}")
-        newEditText.layoutParams = layoutParams
-        newEditText.hint = "EditText ${++editTextCount}"
 
-        // Ajouter le nouvel EditText au LinearLayout
-        binding.editTextContainer.addView(newEditText)
+        val cardView = CardView(requireContext())
+
+        val cardViewLayoutParams = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT,
+            ).apply {
+            topMargin = resources.getDimensionPixelSize(R.dimen.card_margin)
+        }
+        cardView.radius = resources.getDimension(R.dimen.card_corner_radius)
+        cardView.layoutParams = cardViewLayoutParams
+
+        // Ajouter l'EditText au CardView
+        cardView.addView(newEditText)
+
+        // Ajouter le CardView au LinearLayout
+        binding.editTextContainer.addView(cardView)
+        newEditText.requestFocus()
+
     }
 
+
 }
+

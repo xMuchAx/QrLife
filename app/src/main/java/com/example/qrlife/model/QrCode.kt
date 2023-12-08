@@ -11,6 +11,7 @@ class QrCode(val dataQrCode: String, var qrCodeBitmap: Bitmap? = null) {
         private const val QR_CODE_SIZE = 300
 
         fun generateQRCode(data: String): Bitmap? {
+
             try {
                 val bitMatrix: BitMatrix = MultiFormatWriter().encode(
                     data,
@@ -19,6 +20,7 @@ class QrCode(val dataQrCode: String, var qrCodeBitmap: Bitmap? = null) {
                     QR_CODE_SIZE,
                     null
                 )
+
 
                 val width = bitMatrix.width
                 val height = bitMatrix.height

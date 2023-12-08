@@ -67,6 +67,8 @@ class ListQrPageFragment : Fragment() {
                         val qrCode = QrCode(concatenatedData)
                         qrCode.qrCodeBitmap = QrCode.generateQRCode(concatenatedData)
                         qrCodes.add(qrCode)
+                        println("Nombre de QRCodes récupérés : ${concatenatedData}")
+
                     }
                 }
 
@@ -76,8 +78,10 @@ class ListQrPageFragment : Fragment() {
             }
             .addOnFailureListener { exception ->
                 // Gérer les erreurs lors de la récupération des données Firestore
-                // Vous pouvez afficher un message d'erreur ou effectuer d'autres actions nécessaires
+                // Ajoutez des logs pour afficher l'erreur
+                println("Erreur lors de la récupération des QRCodes : $exception")
             }
+
     }
 
 
