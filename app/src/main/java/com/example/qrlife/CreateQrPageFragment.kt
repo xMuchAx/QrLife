@@ -47,6 +47,8 @@ class CreateQrPageFragment : Fragment() {
             println("ID de l'utilisateur dans ListQrPageFragment : $userId")
 
             // Ajouter un écouteur de clic au bouton "Submit"
+            binding.textNameQr.requestFocus()
+
             binding.buttonSubmit.setOnClickListener { addQr(userId) }
             binding.buttonSubmitAdd.setOnClickListener { addNewEditText() }
             binding.imageBack.setOnClickListener{requireActivity().onBackPressed()}
@@ -76,6 +78,7 @@ class CreateQrPageFragment : Fragment() {
                 "Veuillez donnez un nom au QrCode",
                 Toast.LENGTH_SHORT
             ).show()
+            binding.textNameQr.requestFocus()
 
         }else {
             var editTextEmpty = false
@@ -119,7 +122,14 @@ class CreateQrPageFragment : Fragment() {
                     qrCodeRef.add(qrCodeData)
                         .addOnSuccessListener { documentReference ->
                             println("Document ajouté avec l'ID : ${documentReference.id}")
-                            // Ajout réussi, vous pouvez effectuer des actions supplémentaires si nécessaire
+                            Toast.makeText(
+                                requireContext(),
+                                "QrCode créé",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            requireActivity().onBackPressed()
+
+
                         }
                         .addOnFailureListener { e ->
                             println("Erreur lors de l'ajout du document : $e")
@@ -147,6 +157,9 @@ class CreateQrPageFragment : Fragment() {
 
         // Définir un ID pour l'EditText
         newEditText.id = View.generateViewId()
+        newEditText.hint = "index : text..."
+        val leftPadding = resources.getDimensionPixelSize(R.dimen.left_padding)
+        newEditText.setPadding(leftPadding, 0, 0, 0)
 
         val cardView = CardView(requireContext())
 
@@ -154,7 +167,9 @@ class CreateQrPageFragment : Fragment() {
             LinearLayout.LayoutParams.MATCH_PARENT,
             LinearLayout.LayoutParams.WRAP_CONTENT,
             ).apply {
-            topMargin = resources.getDimensionPixelSize(R.dimen.card_margin)
+            topMargin = resources.getDimensionPixelSize(R.dimen.edit_margin)
+            bottomMargin = resources.getDimensionPixelSize(R.dimen.edit_margin)
+
         }
         cardView.radius = resources.getDimension(R.dimen.card_corner_radius)
         cardView.layoutParams = cardViewLayoutParams

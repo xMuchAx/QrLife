@@ -1,18 +1,20 @@
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.qrlife.R
 import com.example.qrlife.databinding.FragmentListQrPageBinding
+import com.example.qrlife.model.QrCode
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.example.qrlife.model.QrCode
+import androidx.fragment.app.Fragment
+import android.view.View
 
 
-class ListQrPageFragment : Fragment() {
+
+class ListQrPageFragment : Fragment(), AnimatedFragment {
 
     private lateinit var binding: FragmentListQrPageBinding
     private val db = FirebaseFirestore.getInstance()
@@ -23,34 +25,53 @@ class ListQrPageFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Gonfler la mise en page pour ce fragment
         binding = FragmentListQrPageBinding.inflate(inflater, container, false)
         val view = binding.root
+        AnimationUtils.startAnimationLoad(requireActivity(), binding.greenBackgroundImageAnim)
+
 
         recyclerView = binding.recyclerView
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
+        // Assurez-vous d'initialiser qrCodeAdapter avant de l'utiliser
+        qrCodeAdapter = QrCodeAdapter(emptyList()) // Utilisez la liste appropriée
+        recyclerView.adapter = qrCodeAdapter
+
+
         val user = FirebaseAuth.getInstance().currentUser
 
         if (user != null) {
-            // L'utilisateur est connecté, récupérer son ID
             val userId = user.uid
-
-            // Afficher les QRCodes pour cet utilisateur
             displayQrCodes(userId)
         } else {
-            // L'utilisateur n'est pas connecté, gérer en conséquence
+            // Gérer le cas où l'utilisateur n'est pas connecté
             // Par exemple, rediriger vers l'écran de connexion
         }
 
-        // Définir le gestionnaire de clic pour btnCreateQr
         binding.btnCreateQr.setOnClickListener { loadFragment(CreateQrPageFragment()) }
+
+        // Mise en place du gestionnaire d'événements pour le clic sur un élément
+        qrCodeAdapter.setOnItemClickListener(object : OnItemClickListener {
+            override fun onItemClick(qrCodeData: String, nameQrCode: String) {
+                val detailsFragment = DetailsQrCodeFragment()
+                val bundle = Bundle()
+                bundle.putString("qrCodeData", qrCodeData)
+                bundle.putString("nameQrCode", nameQrCode)  // Ajoutez le nom du QrCode au bundle
+                detailsFragment.arguments = bundle
+                println(qrCodeData)
+                // Remplacez le fragment actuel par DetailsQrCodeFragment
+                loadFragment(detailsFragment)
+            }
+        })
 
         return view
     }
 
+    override fun startFragmentEnterAnimation() {
+        AnimationUtils.startAnimationLeave(requireActivity(), binding.greenBackgroundImageAnim)
+    }
+
     private fun displayQrCodes(userId: String) {
-        // Effectuer une requête Firestore pour récupérer les QRCodes pour l'utilisateur donné
         db.collection("QrCode")
             .whereEqualTo("userId", userId)
             .get()
@@ -59,34 +80,23 @@ class ListQrPageFragment : Fragment() {
 
                 for (document in documents) {
                     val dataQrCodeArray = document.get("dataQrCode") as? List<String>
-                    if (dataQrCodeArray != null && dataQrCodeArray.isNotEmpty()) {
-                        // Concaténer les éléments du tableau en une seule chaîne
-                        val concatenatedData = dataQrCodeArray.joinToString("")
+                    val nameQrCode = document.getString("nameQr")
 
-                        // Générer un QR Code pour la chaîne concaténée
-                        val qrCode = QrCode(concatenatedData)
+                    if (dataQrCodeArray != null && dataQrCodeArray.isNotEmpty() && nameQrCode != null) {
+                        val concatenatedData = dataQrCodeArray.joinToString(",")
+                        val qrCode = QrCode(concatenatedData, nameQrCode)
                         qrCode.qrCodeBitmap = QrCode.generateQRCode(concatenatedData)
                         qrCodes.add(qrCode)
-                        println("Nombre de QRCodes récupérés : ${concatenatedData}")
-
                     }
                 }
 
-                // Afficher les QRCodes dans le RecyclerView en utilisant un adaptateur
-                qrCodeAdapter = QrCodeAdapter(qrCodes)
-                recyclerView.adapter = qrCodeAdapter
+                // Mettez à jour les données de l'adaptateur ici
+                qrCodeAdapter.updateData(qrCodes)
             }
             .addOnFailureListener { exception ->
-                // Gérer les erreurs lors de la récupération des données Firestore
-                // Ajoutez des logs pour afficher l'erreur
-                println("Erreur lors de la récupération des QRCodes : $exception")
+                println("Error retrieving QrCodes: $exception")
             }
-
     }
-
-
-
-
 
 
     private fun loadFragment(fragment: Fragment) {
@@ -94,5 +104,9 @@ class ListQrPageFragment : Fragment() {
         transaction?.replace(R.id.fragmentContainer, fragment)
         transaction?.addToBackStack(null)
         transaction?.commit()
+    }
+
+    override fun onPause() {
+        super.onPause()
     }
 }

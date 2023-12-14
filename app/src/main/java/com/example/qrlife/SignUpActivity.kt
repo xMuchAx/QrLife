@@ -3,6 +3,7 @@ package com.example.qrlife
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -27,15 +28,26 @@ class SignUpActivity : AppCompatActivity() {
         binding = SignUpBinding.inflate(layoutInflater)
         setContentView(binding.root)
         auth = FirebaseAuth.getInstance()
-
+        AnimationUtils.startAnimationLoad(this, binding.greenBackgroundImageAnim)
         binding.textLogin.setOnClickListener { onLoginClicked() }
         binding.buttonSignUp.setOnClickListener { onSignUpClicked() }
 
     }
 
     fun onLoginClicked(){
-        signUpIntent = Intent(this, LoginActivity::class.java)
-        startActivity(signUpIntent)
+        AnimationUtils.startAnimationLeave(this, binding.greenBackgroundImageAnim)
+
+
+
+        Handler().postDelayed({
+
+            signUpIntent = Intent(this, LoginActivity::class.java)
+            startActivity(signUpIntent)
+            overridePendingTransition(0, 0)
+
+
+
+        }, 550)
     }
 
     private fun onSignUpClicked() {
@@ -71,12 +83,20 @@ class SignUpActivity : AppCompatActivity() {
         // Mettez à jour l'interface utilisateur en fonction de l'état de l'authentification
         if (user != null) {
             // L'utilisateur est connecté, vous pouvez rediriger vers une autre activité
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
-            finish()
+
+            AnimationUtils.startAnimationLeave(this, binding.greenBackgroundImageAnim)
+
+            Handler().postDelayed({
+
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
+
+            }, 550)
+
         } else {
             // L'inscription a échoué ou l'utilisateur n'est pas connecté
             // Peut-être mettre à jour l'interface utilisateur en conséquence
         }
     }
+
 }

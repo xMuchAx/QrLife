@@ -2,6 +2,7 @@ package com.example.qrlife
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.qrlife.databinding.LoginBinding
@@ -17,7 +18,7 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = LoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        AnimationUtils.startAnimationLoad(this, binding.greenBackgroundImageAnim)
         auth = FirebaseAuth.getInstance()
 
         binding.textSignUp.setOnClickListener { onSignUpClicked() }
@@ -25,8 +26,21 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun onSignUpClicked() {
-        loginIntent = Intent(this, SignUpActivity::class.java)
-        startActivity(loginIntent)
+
+        AnimationUtils.startAnimationLeave(this, binding.greenBackgroundImageAnim)
+
+
+
+        Handler().postDelayed({
+
+            loginIntent = Intent(this, SignUpActivity::class.java)
+            startActivity(loginIntent)
+            overridePendingTransition(0, 0)
+
+
+
+        }, 550)
+
     }
 
     private fun onButtonLoginClicked() {
@@ -43,15 +57,23 @@ class LoginActivity : AppCompatActivity() {
         auth.signInWithEmailAndPassword(enteredEmail, enteredPassword)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    // Connexion réussie, rediriger vers MainActivity
-                    val intent = Intent(this, MainActivity::class.java)
-                    startActivity(intent)
-                    finish()
+                    // Connexion réussie, déclencher l'animation avant de rediriger vers MainActivity
+                    AnimationUtils.startAnimationLeave(this, binding.greenBackgroundImageAnim)
+
+                    Handler().postDelayed({
+
+                        val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                        startActivity(intent)
+
+                    }, 550)
+
                 } else {
                     // Gérer les erreurs de connexion
                     Toast.makeText(this, "Échec de la connexion", Toast.LENGTH_SHORT).show()
                 }
             }
     }
+
+
 
 }

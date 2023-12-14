@@ -7,6 +7,17 @@
     android:layout_height="match_parent"
     tools:context=".SignUpActivity">
 
+    <ImageView
+        android:id="@+id/greenBackgroundImageAnim"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        android:src="@drawable/background_primary"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:elevation="2dp"
+        android:translationY="60dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/greenBackgroundImage"
@@ -21,6 +32,7 @@
 
     <ImageView
         android:id="@+id/logoQrLife"
+        android:elevation="3dp"
         android:layout_width="190dp"
         android:layout_height="190dp"
         android:layout_marginTop="32dp"
@@ -34,6 +46,10 @@
         android:layout_width="300dp"
         android:layout_height="65dp"
         android:layout_marginTop="20dp"
+        android:shadowColor = "#8888"
+        android:shadowDx = "1"
+        android:shadowDy = "5"
+        android:shadowRadius = "3"
         android:backgroundTint="@color/vert_principal"
         android:text="SignUp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -61,6 +77,10 @@
             android:layout_marginLeft="10dp"
             android:layout_marginBottom="-8dp"
             android:gravity="left"
+            android:shadowColor = "#8888"
+            android:shadowDx = "1"
+            android:shadowDy = "5"
+            android:shadowRadius = "3"
             android:text="Username"
             android:textColor="@color/white"
             android:textSize="18sp" />
@@ -91,6 +111,10 @@
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="-8dp"
+            android:shadowColor = "#8888"
+            android:shadowDx = "1"
+            android:shadowDy = "5"
+            android:shadowRadius = "3"
             android:gravity="left"
             android:text="Email"
             android:textColor="@color/white"
@@ -122,6 +146,10 @@
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="-8dp"
+            android:shadowColor = "#8888"
+            android:shadowDx = "1"
+            android:shadowDy = "5"
+            android:shadowRadius = "3"
             android:gravity="left"
             android:text="Password"
             android:textColor="@color/white"

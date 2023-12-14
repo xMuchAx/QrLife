@@ -7,21 +7,38 @@
     android:layout_height="match_parent"
     tools:context=".LoginActivity">
 
+    <ImageView
+        android:id="@+id/greenBackgroundImageAnim"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        android:translationY="60dp"
+        android:elevation="2dp"
+        android:src="@drawable/background_primary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
 
     <ImageView
         android:id="@+id/greenBackgroundImage"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:scaleType="fitXY"
+        android:translationY="0dp"
         android:src="@drawable/background_primary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_percent="0.66"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        />
 
     <ImageView
         android:id="@+id/logoQrLife"
+        android:elevation="3dp"
         android:layout_width="190dp"
         android:layout_height="190dp"
         android:layout_marginTop="32dp"
@@ -37,6 +54,10 @@
         android:layout_marginTop="20dp"
         android:backgroundTint="@color/vert_principal"
         android:text="Login"
+        android:shadowColor = "#8888"
+        android:shadowDx = "1"
+        android:shadowDy = "5"
+        android:shadowRadius = "5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:textSize="20sp"
@@ -61,6 +82,10 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginBottom="-8dp"
+            android:shadowColor = "#8888"
+            android:shadowDx = "1"
+            android:shadowDy = "5"
+            android:shadowRadius = "3"
             android:gravity="left"
             android:text="Email"
             android:textColor="@color/white"
@@ -90,6 +115,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
+            android:shadowColor = "#8888"
+            android:shadowDx = "1"
+            android:shadowDy = "5"
+            android:shadowRadius = "3"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="-8dp"
             android:gravity="left"

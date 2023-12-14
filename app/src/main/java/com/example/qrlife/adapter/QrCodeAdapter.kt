@@ -1,4 +1,3 @@
-import android.graphics.Bitmap
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,14 +7,33 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.qrlife.R
 import com.example.qrlife.model.QrCode
 
-// Importez les bibliothèques nécessaires
+interface OnItemClickListener {
+    fun onItemClick(qrCodeData: String, nameQrCode: String)
+}
 
-class QrCodeAdapter(private val qrCodes: List<QrCode>) :
+
+
+class QrCodeAdapter(private var qrCodes: List<QrCode>) :
     RecyclerView.Adapter<QrCodeAdapter.QrCodeViewHolder>() {
 
+    fun updateData(newQrCodes: List<QrCode>) {
+        qrCodes = newQrCodes
+        notifyDataSetChanged()
+    }
+
+    private var itemClickListener: OnItemClickListener? = null
+
+    fun setOnItemClickListener(listener: OnItemClickListener) {
+        this.itemClickListener = listener
+    }
+
+
+
     class QrCodeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val dataQrCodeTextView: TextView = itemView.findViewById(R.id.dataQrCodeTextView)
+        val nameQrCodeTextView: TextView = itemView.findViewById(R.id.nameQrCodeTextView)
+
         val qrCodeImageView: ImageView = itemView.findViewById(R.id.qrCodeImageView)
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): QrCodeViewHolder {
@@ -28,15 +46,20 @@ class QrCodeAdapter(private val qrCodes: List<QrCode>) :
         val currentQrCode = qrCodes[position]
 
         // Afficher les données du QrCode
-        holder.dataQrCodeTextView.text = currentQrCode.dataQrCode
+        holder.nameQrCodeTextView.text = currentQrCode.nameQrCode
 
         // Afficher le QR Code dans l'ImageView
         holder.qrCodeImageView.setImageBitmap(currentQrCode.qrCodeBitmap)
+
+        // Gérer le clic sur l'élément
+        holder.itemView.setOnClickListener {
+            itemClickListener?.onItemClick(currentQrCode.dataQrCode, currentQrCode.nameQrCode)
+        }
     }
 
     override fun getItemCount(): Int {
         return qrCodes.size
     }
+
+
 }
-
-
