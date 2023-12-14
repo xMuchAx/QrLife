@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="card_margin">16dp</dimen>
+    <dimen name="edit_margin">8dp</dimen>
     <dimen name="card_corner_radius">20dp</dimen>
     <dimen name="card_width">380dp</dimen>
-    <dimen name="edit_text_height">55dp</dimen>
-
-
+    <dimen name="edit_text_height">65dp</dimen>
+    <dimen name="left_padding">14dp</dimen>
 </resources>

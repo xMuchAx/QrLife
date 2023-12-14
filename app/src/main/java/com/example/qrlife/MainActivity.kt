@@ -1,5 +1,6 @@
 package com.example.qrlife
 
+import AnimatedFragment
 import HomePageFragment
 import ListQrPageFragment
 import ScanPageFragment
@@ -7,6 +8,7 @@ import UserPageFragment
 import android.content.Intent
 import androidx.fragment.app.Fragment
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.widget.ImageView
 import android.widget.Toast
@@ -35,45 +37,90 @@ class MainActivity : AppCompatActivity() {
 
 
         // Définir des écouteurs de clic pour chaque onglet
-        binding.homePage.setOnClickListener { loadFragment(HomePageFragment())
+        binding.homePage.setOnClickListener {
+            val currentFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainer)
 
-            it.isSelected = true
-            binding.qrPage.isSelected = false
-            binding.scanPage.isSelected = false
-            binding.userPage.isSelected = false
+            if (currentFragment is AnimatedFragment) {
+                // Appellez la méthode dans le fragment
+                currentFragment.startFragmentEnterAnimation()
+            }
+
+            Handler().postDelayed({
+
+                loadFragment(HomePageFragment())
+
+
+                it.isSelected = true
+                binding.qrPage.isSelected = false
+                binding.scanPage.isSelected = false
+                binding.userPage.isSelected = false
+
+            }, 550)
 
         }
 
         binding.qrPage.setOnClickListener {
 
-            loadFragment(ListQrPageFragment())
+            val currentFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainer)
 
-            it.isSelected = true
-            binding.homePage.isSelected = false
-            binding.scanPage.isSelected = false
-            binding.userPage.isSelected = false
+            if (currentFragment is AnimatedFragment) {
+                // Appellez la méthode dans le fragment
+                currentFragment.startFragmentEnterAnimation()
+            }
+            Handler().postDelayed({
 
+                loadFragment(ListQrPageFragment())
+
+                // Obtenez une référence au fragment actuellement attaché
+
+                it.isSelected = true
+                binding.homePage.isSelected = false
+                binding.scanPage.isSelected = false
+                binding.userPage.isSelected = false
+            }, 550)
         }
 
+
+
         binding.scanPage.setOnClickListener {
+            val currentFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainer)
 
-            loadFragment(ScanPageFragment())
+            if (currentFragment is AnimatedFragment) {
+                // Appellez la méthode dans le fragment
+                currentFragment.startFragmentEnterAnimation()
+            }
 
-            it.isSelected = true
-            binding.homePage.isSelected = false
-            binding.qrPage.isSelected = false
-            binding.userPage.isSelected = false
+            Handler().postDelayed({
+
+                loadFragment(ScanPageFragment())
+
+                it.isSelected = true
+                binding.homePage.isSelected = false
+                binding.qrPage.isSelected = false
+                binding.userPage.isSelected = false
+
+            }, 550)
 
         }
 
         binding.userPage.setOnClickListener {
+            val currentFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainer)
 
-            loadFragment(UserPageFragment())
+            if (currentFragment is AnimatedFragment) {
+                // Appellez la méthode dans le fragment
+                currentFragment.startFragmentEnterAnimation()
+            }
 
-            it.isSelected = true
-            binding.homePage.isSelected = false
-            binding.qrPage.isSelected = false
-            binding.scanPage.isSelected = false
+            Handler().postDelayed({
+
+                loadFragment(UserPageFragment())
+
+                it.isSelected = true
+                binding.homePage.isSelected = false
+                binding.qrPage.isSelected = false
+                binding.scanPage.isSelected = false
+
+            }, 550)
 
 
         }

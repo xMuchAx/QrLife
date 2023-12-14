@@ -5,10 +5,10 @@ import com.google.zxing.BarcodeFormat
 import com.google.zxing.MultiFormatWriter
 import com.google.zxing.common.BitMatrix
 
-class QrCode(val dataQrCode: String, var qrCodeBitmap: Bitmap? = null) {
+class QrCode(val dataQrCode: String, val nameQrCode: String, var qrCodeBitmap: Bitmap? = null){
 
     companion object {
-        private const val QR_CODE_SIZE = 300
+        private const val QR_CODE_SIZE = 360
 
         fun generateQRCode(data: String): Bitmap? {
 
@@ -29,7 +29,7 @@ class QrCode(val dataQrCode: String, var qrCodeBitmap: Bitmap? = null) {
                 for (y in 0 until height) {
                     for (x in 0 until width) {
                         if (bitMatrix[x, y]) {
-                            pixels[y * width + x] = 0xff000000.toInt()
+                            pixels[y * width + x] = 0xFFA1F1A4.toInt()
                         } else {
                             pixels[y * width + x] = 0xffffffff.toInt()
                         }
@@ -44,5 +44,7 @@ class QrCode(val dataQrCode: String, var qrCodeBitmap: Bitmap? = null) {
             }
             return null
         }
+
+
     }
 }

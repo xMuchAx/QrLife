@@ -17,26 +17,25 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-       >
+        android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/navBarBase"
+        <View
+            android:id="@+id/navBarBlock"
             android:layout_width="0dp"
-            android:layout_height="400dp"
-            android:layout_marginBottom="-300dp"
-            android:src="@drawable/navbar"
+            android:layout_height="80dp"
+            android:background="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
+            android:outlineProvider="bounds"
             app:layout_constraintStart_toStartOf="parent" />
+
 
         <LinearLayout
             android:id="@+id/iconContainer"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginBottom="20dp"
+            android:layout_marginBottom="17dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -45,7 +44,7 @@
             <ImageView
                 android:id="@+id/homePage"
                 android:layout_width="0dp"
-                android:layout_height="50dp"
+                android:layout_height="42dp"
                 android:layout_marginEnd="8dp"
                 android:layout_weight="1"
                 android:clickable="true"
@@ -54,7 +53,7 @@
             <ImageView
                 android:id="@+id/qrPage"
                 android:layout_width="0dp"
-                android:layout_height="50dp"
+                android:layout_height="42dp"
                 android:layout_marginEnd="8dp"
                 android:layout_weight="1"
                 android:src="@drawable/selector_qrpage" />
@@ -62,7 +61,7 @@
             <ImageView
                 android:id="@+id/scanPage"
                 android:layout_width="0dp"
-                android:layout_height="50dp"
+                android:layout_height="42dp"
                 android:layout_marginEnd="8dp"
                 android:layout_weight="1"
                 android:src="@drawable/selector_scanpage" />
@@ -70,7 +69,7 @@
             <ImageView
                 android:id="@+id/userPage"
                 android:layout_width="0dp"
-                android:layout_height="50dp"
+                android:layout_height="42dp"
                 android:layout_weight="1"
                 android:src="@drawable/selector_userpage" />
 
